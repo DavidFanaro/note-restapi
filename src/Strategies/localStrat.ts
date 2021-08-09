@@ -3,23 +3,21 @@ import { Strategy } from "passport-local";
 import bcrypt from "bcrypt";
 import database from "../database";
 
-
-
-passport.serializeUser((user:any, done) => {
+passport.serializeUser((user: any, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser( async (id:string, done) => {
+passport.deserializeUser(async (id: string, done) => {
   try {
     const user = await database.user.findFirst({
-      where:{
-        id
-      }
-    })
+      where: {
+        id,
+      },
+    });
 
-    done(null,user)
+    done(null, user);
   } catch (error) {
-    done(error,false)
+    done(error, false);
   }
 });
 
@@ -41,7 +39,7 @@ passport.use(
         return done(null, false, { message: "Incorrect username." });
       }
     } catch (e) {
-      return done(e,false,{message:"Error"});
+      return done(e, false, { message: "Error" });
     }
   })
 );
